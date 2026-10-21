@@ -1,4 +1,6 @@
-# Puissance 4 — Solveur fort IA
+[🇫🇷 Français](README.fr.md) | [🇬🇧 English](README.md)
+
+# Puissance 4 — IA Solveur fort
 
 Un solveur de Puissance 4 écrit en C, conçu pour déterminer les meilleurs coups grâce à l'exploration de l'arbre de jeu. Le projet est encore en cours de développement.
 
