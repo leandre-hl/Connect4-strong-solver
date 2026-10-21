@@ -1,3 +1,5 @@
+[🇫🇷 Français](README.fr.md) | [🇬🇧 English](README.md)
+
 # Connect Four — Strong AI Solver
 
 A Connect Four solver written in C, designed to find optimal moves through game-tree search. The project is a work in progress.
