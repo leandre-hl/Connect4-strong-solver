@@ -87,7 +87,11 @@ int user_strategy(game* g) {
 
         printf("  Enter your move (0-%d) : ", NCOLS - 1);
         
-        scanf("%c", &input);
+        if (scanf("%c", &input) != 1) {
+            /* end of input (Ctrl-D): quit instead of looping forever */
+            printf("\n");
+            exit(EXIT_SUCCESS);
+        }
 
         /* clean buffer */
         int c;
@@ -101,25 +105,4 @@ int user_strategy(game* g) {
     }
 
     return (int) (input - '0');
-}
-
-void print_ai_specs(int score, int nb_positions_evaluated, double time_taken, int depth) {
-    printf("  Score : %d\n", score);
-    if (score > 0) {
-        printf("  AI has a forced win in %d moves\n", NCOLS*NROWS - score - depth);
-    }
-    else if (score < 0) {
-        printf("  Opponent has a forced win in %d moves\n", NCOLS*NROWS + score - depth);
-    }
-    else {
-        printf("  No forced win for any player\n");
-    }
-    printf("  Number of positions evaluated : %d\n", nb_positions_evaluated);
-
-    int sec = (int) time_taken;
-    int ms = (int) ((time_taken - sec) * 1000);
-    printf("  Time taken : %d.%03d seconds\n", sec, ms);
-
-    int kilo_positions_per_sec = (int) (nb_positions_evaluated / time_taken / 1000);
-    printf("  Speed : %d kilo-positions/second\n", kilo_positions_per_sec);
 }

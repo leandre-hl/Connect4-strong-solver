@@ -2,86 +2,47 @@
 
 # Connect Four — Strong AI Solver
 
-A Connect Four solver written in C, designed to find optimal moves through game-tree search. The project is a work in progress.
+A Connect Four solver written in C. The project is being rewritten from scratch, following Pascal Pons's tutorial [Solving Connect 4: how to build a perfect AI](http://blog.gamesolver.org/solving-connect-four/).
 
-## Features
+## Current status
 
-- **Bitboard representation:** encodes the board using 64-bit integers for efficient move generation and win detection.
-- **Negamax search:** explores possible game continuations and evaluates positions from the current player's perspective.
-- **Alpha-beta pruning:** reduces the search space by eliminating branches that cannot improve the current decision.
-- **Transposition table:** caches previously evaluated positions to avoid redundant computations.
-- **Move ordering:** prioritizes central columns to improve search efficiency.
-- **Performance statistics:** reports the evaluated score, number of positions explored, execution time and search speed.
-- **Terminal interface:** displays the board with colored pieces and allows interactive play.
+- **Done:** bitboard board representation (7 × 6, 64-bit integers) and a two-player game in the terminal.
+- **Next:** validate the bitboards against a naive implementation, then rebuild the solver step by step.
 
-## Implementation
+## Roadmap
 
-The solver uses a bitboard representation of the standard 7 × 6 Connect Four board. Each position is represented by two 64-bit integers: one encoding the occupied cells and another encoding the current player's pieces. An additional bit in each column separates adjacent columns, simplifying move generation and alignment detection.
-
-The AI uses a negamax algorithm with alpha-beta pruning. Scores distinguish forced wins, forced losses and draws, while favoring faster wins and delaying inevitable losses.
-
-A transposition table stores position keys and search results, including bounds obtained through alpha-beta pruning. The search also uses null-window searches to narrow down the minimax score.
+1. Bitboard `Position` with a test suite checked against a naive 2D-array implementation.
+2. Solver, one tutorial part at a time: negamax, alpha-beta, move ordering, transposition table, iterative deepening and null window, skipping losing moves, move sorting, optimized transposition table, lower bounds.
+3. Benchmark based on the tutorial's protocol: 6 test sets of 1000 positions, one position per line on standard input, `position score nodes time` on standard output.
+4. Command-line player using the solver.
 
 ## Project structure
 
 ```text
 connect4/
-├── main.c
 ├── Makefile
 ├── include/
-│   ├── ai.h
 │   ├── game.h
-│   ├── transposition_table.h
 │   └── user_interface.h
 └── src/
-    ├── ai.c
     ├── game.c
-    ├── transposition_table.c
+    ├── main_play.c
     └── user_interface.c
 ```
 
-- `main.c`: initializes the game and manages the game loop.
-- `src/game.c`: implements board representation, move generation, position updates and win detection.
-- `src/ai.c`: implements the search algorithm and AI move selection.
-- `src/transposition_table.c`: implements the transposition table.
-- `src/user_interface.c`: handles board rendering, user input and search statistics.
-- `include/`: contains the corresponding header files.
-- `Makefile`: defines the build and execution rules.
+- `src/game.c`: board representation, move generation, position updates and win detection.
+- `src/user_interface.c`: board rendering and user input.
+- `src/main_play.c`: two-player game loop.
+- `include/`: header files.
+- `Makefile`: build rules.
 
 ## Build and run
 
 The project uses GCC and Make.
 
-Compile the executable:
-
 ```bash
-make compile
+make            # build the game (optimized) into build/release/connect4
+make run        # build and play
+make debug      # build with -O0 and the address/undefined-behavior sanitizers
+make clean      # remove the build/ directory
 ```
-
-Run the game:
-
-```bash
-make run
-```
-
-To compile and run in one command:
-
-```bash
-make
-```
-
-To remove generated object files and the executable:
-
-```bash
-make clean
-```
-
-## Current status
-
-The project is still under development. The board representation, game mechanics, terminal interface and core search components have been implemented, but the solver is not yet complete.
-
-Further work includes completing and validating the search algorithm, testing its correctness against known Connect Four positions, and improving its performance on difficult positions.
-
-## Goal
-
-The ultimate goal is to build a strong Connect Four AI capable of solving positions efficiently and finding optimal moves through systematic game-tree search.

@@ -1,0 +1,6 @@
+build/
+*.o
+*.d
+c4solver
+compile_commands.json
+.cache/

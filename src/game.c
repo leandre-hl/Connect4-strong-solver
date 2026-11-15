@@ -1,8 +1,8 @@
 #include "game.h"
 
-uint64_t top_mask[NCOLS];
-uint64_t bottom_mask[NCOLS];
-uint64_t bottom_mask_all; /* bitboard with the bottom cells of each column set to 1 */
+uint64_t top_mask[NCOLS];       /* array of bitboards with the top cell of the column set to 1 */
+uint64_t bottom_mask[NCOLS];    /* array of bitboards with the bottom cell of the column set to 1 */
+uint64_t bottom_mask_all;       /* bitboard with the bottom cells of each column set to 1 */
 bool masks_ready = false;
 
 void init_masks(void) {
@@ -11,17 +11,17 @@ void init_masks(void) {
     bottom_mask_all = 0;
 
     for (int col = 0; col < NCOLS; col++) {
-        top_mask[col] = 1ULL << (NROWS - 1 + col * (NROWS + 1));
         bottom_mask[col] = 1ULL << (col * (NROWS + 1));
+        top_mask[col] = bottom_mask[col] << (NROWS - 1);
         bottom_mask_all |= bottom_mask[col];
     }
     masks_ready = true;
 }
 
-game *init_game(void) {
+game* init_game(void) {
     if (!masks_ready) init_masks();
 
-    game *g = malloc(sizeof(*g));
+    game* g = malloc(sizeof(*g));
     assert(g != NULL);
 
     g->mask = 0;

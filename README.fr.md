@@ -2,86 +2,47 @@
 
 # Puissance 4 — IA Solveur fort
 
-Un solveur de Puissance 4 écrit en C, conçu pour déterminer les meilleurs coups grâce à l'exploration de l'arbre de jeu. Le projet est encore en cours de développement.
+Un solveur de Puissance 4 écrit en C. Le projet est en cours de réécriture complète, en suivant le tutoriel de Pascal Pons [Solving Connect 4: how to build a perfect AI](http://blog.gamesolver.org/solving-connect-four/).
 
-## Fonctionnalités
+## État actuel
 
-- **Représentation par bitboards :** encode le plateau à l'aide d'entiers de 64 bits pour accélérer la génération des coups et la détection des alignements.
-- **Recherche Negamax :** explore les continuations possibles et évalue les positions du point de vue du joueur courant.
-- **Élagage alpha-bêta :** réduit l'espace de recherche en éliminant les branches qui ne peuvent pas améliorer la décision actuelle.
-- **Table de transpositions :** mémorise les positions déjà évaluées afin d'éviter les calculs redondants.
-- **Ordonnancement des coups :** privilégie les colonnes centrales pour améliorer l'efficacité de la recherche.
-- **Statistiques de performance :** affiche le score évalué, le nombre de positions explorées, le temps d'exécution et la vitesse de recherche.
-- **Interface en terminal :** affiche le plateau avec des pions colorés et permet de jouer une partie de manière interactive.
+- **Fait :** représentation du plateau par bitboards (7 × 6, entiers de 64 bits) et partie à deux joueurs dans le terminal.
+- **Prochaine étape :** valider les bitboards par rapport à une implémentation naïve, puis reconstruire le solveur pas à pas.
 
-## Implémentation
+## Feuille de route
 
-Le solveur utilise une représentation par bitboards du plateau standard de Puissance 4, composé de 7 colonnes et de 6 lignes. Chaque position est représentée par deux entiers de 64 bits : l'un encode les cases occupées, l'autre les pions du joueur courant. Un bit supplémentaire dans chaque colonne sépare les colonnes adjacentes, ce qui simplifie la génération des coups et la détection des alignements.
-
-L'IA utilise l'algorithme Negamax avec élagage alpha-bêta. Les scores permettent de distinguer les victoires forcées, les défaites forcées et les matchs nuls, tout en favorisant les victoires rapides et en retardant les défaites inévitables.
-
-Une table de transpositions stocke les clés des positions et les résultats de recherche, notamment les bornes obtenues grâce à l'élagage alpha-bêta. La recherche utilise également des recherches à fenêtre nulle pour affiner l'estimation du score minimax.
+1. `Position` en bitboards, avec une suite de tests comparée à une implémentation naïve à tableau 2D.
+2. Solveur, une partie du tutoriel à la fois : negamax, alpha-bêta, ordre des coups, table de transposition, approfondissement itératif et fenêtre nulle, élimination des coups perdants, tri des coups, table de transposition optimisée, bornes basses.
+3. Benchmark basé sur le protocole du tutoriel : 6 jeux de 1000 positions, une position par ligne sur l'entrée standard, `position score nœuds temps` sur la sortie standard.
+4. Joueur en ligne de commande utilisant le solveur.
 
 ## Structure du projet
 
 ```text
 connect4/
-├── main.c
 ├── Makefile
 ├── include/
-│   ├── ai.h
 │   ├── game.h
-│   ├── transposition_table.h
 │   └── user_interface.h
 └── src/
-    ├── ai.c
     ├── game.c
-    ├── transposition_table.c
+    ├── main_play.c
     └── user_interface.c
 ```
 
-- `main.c` : initialise la partie et gère la boucle de jeu.
-- `src/game.c` : implémente la représentation du plateau, la génération des coups, la mise à jour des positions et la détection des victoires.
-- `src/ai.c` : implémente l'algorithme de recherche et la sélection des coups par l'IA.
-- `src/transposition_table.c` : implémente la table de transpositions.
-- `src/user_interface.c` : gère l'affichage du plateau, la saisie utilisateur et les statistiques de recherche.
-- `include/` : contient les fichiers d'en-tête correspondants.
-- `Makefile` : définit les règles de compilation et d'exécution.
+- `src/game.c` : représentation du plateau, génération des coups, mise à jour des positions et détection des victoires.
+- `src/user_interface.c` : affichage du plateau et saisie utilisateur.
+- `src/main_play.c` : boucle de jeu à deux joueurs.
+- `include/` : fichiers d'en-tête.
+- `Makefile` : règles de compilation.
 
 ## Compilation et exécution
 
 Le projet utilise GCC et Make.
 
-Compiler l'exécutable :
-
 ```bash
-make compile
+make            # compile le jeu (optimisé) dans build/release/connect4
+make run        # compile et lance une partie
+make debug      # compile en -O0 avec les sanitizers address/undefined
+make clean      # supprime le dossier build/
 ```
-
-Lancer le jeu :
-
-```bash
-make run
-```
-
-Pour compiler et lancer le programme en une seule commande :
-
-```bash
-make
-```
-
-Pour supprimer les fichiers objets générés et l'exécutable :
-
-```bash
-make clean
-```
-
-## État actuel du projet
-
-Le projet est encore en développement. La représentation du plateau, les mécanismes du jeu, l'interface en terminal et les principaux composants de recherche ont été implémentés, mais le solveur n'est pas encore terminé.
-
-Les prochaines étapes consistent à finaliser et valider l'algorithme de recherche, à tester sa correction sur des positions de Puissance 4 connues et à améliorer ses performances sur les positions difficiles.
-
-## Objectif
-
-L'objectif final est de développer une IA de Puissance 4 performante, capable de résoudre efficacement des positions et de trouver des coups optimaux grâce à une exploration systématique de l'arbre de jeu.

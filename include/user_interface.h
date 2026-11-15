@@ -17,6 +17,4 @@ void print_board(game* g);
 
 int user_strategy(game* g);
 
-void print_ai_specs(int score, int nb_positions_evaluated, double elapsed_time, int depth);
-
 #endif
