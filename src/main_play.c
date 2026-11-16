@@ -7,7 +7,7 @@ int main(void) {
     game* g = init_game();
 
     /* Two human players, until a win or a full board. */
-    while (!has_won(g) && g->nb_moves < NROWS * NCOLS) {
+    while (!has_won(g) && g->nb_half_moves < NROWS * NCOLS) {
         print_board(g);
         drop_piece(g, user_strategy(g));
     }

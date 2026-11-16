@@ -54,7 +54,7 @@ void print_board(game* g) {
         printf(COLOR_BLUE "|  " COLOR_RESET "%d", row);
         
         if (row == 1) {
-            printf("   Number of moves played : %d", g->nb_moves);
+            printf("   Number of half moves played : %d", g->nb_half_moves);
         }
 
 

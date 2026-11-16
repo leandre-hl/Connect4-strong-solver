@@ -1,6 +1,7 @@
+bench/data
+bench/results.csv
+
 build/
-*.o
-*.d
-c4solver
+
+index/
 compile_commands.json
-.cache/
